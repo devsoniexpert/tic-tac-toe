@@ -1,0 +1,248 @@
+:root {
+  --bg-1: #0f172a;
+  --bg-2: #111827;
+  --card: rgba(17, 24, 39, 0.72);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --x: #38bdf8;
+  --o: #f472b6;
+  --win: #22c55e;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, #1e293b 0%, transparent 35%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 95%);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.app {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.card {
+  width: min(92vw, 560px);
+  padding: 28px;
+  border: 1px solid var(--stroke);
+  border-radius: 28px;
+  background: var(--card);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  animation: cardIn 0.7s ease both;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+}
+
+.status {
+  margin: 12px 0 0;
+  font-size: 1rem;
+  color: var(--muted);
+  min-height: 1.5em;
+}
+
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.score {
+  padding: 14px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.score span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.score strong {
+  font-size: 1.4rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+.cell {
+  position: relative;
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  color: var(--text);
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+  overflow: hidden;
+}
+
+.cell:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.22);
+}
+
+.cell:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+.cell.x {
+  color: var(--x);
+  text-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+}
+
+.cell.o {
+  color: var(--o);
+  text-shadow: 0 0 18px rgba(244, 114, 182, 0.35);
+}
+
+.cell.filled {
+  animation: pop 0.22s ease;
+}
+
+.cell.win {
+  background: linear-gradient(180deg, rgba(34,197,94,0.22), rgba(255,255,255,0.04));
+  border-color: rgba(34,197,94,0.6);
+  box-shadow: 0 0 0 1px rgba(34,197,94,0.15), 0 0 35px rgba(34,197,94,0.22);
+  animation: winPulse 1s ease-in-out infinite;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+}
+
+.primary:hover {
+  box-shadow: 0 14px 34px rgba(99, 102, 241, 0.45);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes winPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .scoreboard {
+    gap: 8px;
+  }
+
+  .score {
+    padding: 12px 8px;
+    border-radius: 14px;
+  }
+
+  .cell {
+    border-radius: 16px;
+  }
+}
